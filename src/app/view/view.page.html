@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="movie = undefined">
+      <ion-back-button defaultHref="tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Movie Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="movie">
+    <ion-item>
+      <ion-buttons slot="start">
+        <ion-button>
+          <ion-icon slot="start" class="heart" name="heart"></ion-icon>{{movie.details.votes}}
+        </ion-button>
+      </ion-buttons>
+      <ion-label style="text-align: center;">
+        <div class="stars" *ngFor="let star of arr; let i = index">
+          <ion-icon *ngIf="i <= getRate(movie.details.votes, movie.details.views) - 1; else half" class="starred" name="star"></ion-icon>
+          <ng-template #half>
+            <ion-icon *ngIf="getRate(movie.details.votes, movie.details.views)%1 >= 0.5 && i - trunc(getRate(movie.details.votes, movie.details.views)-1) == 1; else def" class="starred"  name="star-half-outline"></ion-icon>
+          </ng-template>
+          <ng-template #def>
+            <ion-icon name="star"></ion-icon>
+          </ng-template>
+        </div>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button><ion-icon class="comment" slot="start" name="eye"></ion-icon>{{movie.details.views}}</ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-segment value="view" [(ngModel)]="seg">
+      <ion-segment-button value="view">
+        <ion-label>Details</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="trailer" *ngIf="movie.details.trailer">
+        <ion-label>Trailer</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div [ngSwitch]="seg" class="seg">
+      <div *ngSwitchCase="'view'">
+        <img [src]="movie.details.img">
+      </div>
+      <div *ngSwitchCase="'trailer'">
+        <iframe *ngIf="movie.details.trailer" width="100%" height="100%" [src]="trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    
+    <ion-item>
+      <p class="title">{{movie.details.title}}</p>
+    </ion-item>
+    <div class="bttn">
+      <!-- <ion-button class="trailer" *ngIf="movie.details.trailer;" (click)="''"  shape="round" expand="block" href="{{movie.details.trailer}}"><ion-icon slot="start" name="play-circle-outline"></ion-icon> Watch Trailer</ion-button> -->
+      <ion-button *ngIf="movie.details.from != 'cinemas'; else cine"  shape="round" expand="block" href="{{movie.details.link}}"><ion-icon slot="start" name="play-circle-outline"></ion-icon> Watch Now</ion-button>
+
+      <ng-template #cine><ion-button shape="round" expand="block"><ion-icon slot="start" name="cash-outline"></ion-icon>Buy Ticket</ion-button></ng-template>
+    </div>
+    <ion-list>
+      <ion-item><p class="des">SYNOSIS: <br>{{movie.details.description}}</p></ion-item>
+      <ion-item><p style="text-transform: capitalize;">CAST: {{getCast(movie.details.cast)}}</p></ion-item>
+      <ion-item><p style="text-transform: capitalize;">PRODUCERS: {{getCast(movie.details.producers)}}</p></ion-item>
+      <ion-item><p style="text-transform: capitalize;">GENRE: {{getCast(movie.details.genre)}}</p></ion-item>
+      <ion-item><p style="text-transform: capitalize;">YEAR: {{movie.details.year}}</p></ion-item>
+      <ion-item><p style="text-transform: capitalize;">LANGUAGES: {{getCast(movie.details.language)}}</p></ion-item>
+      <ion-item><p style="text-transform: capitalize;">Type: {{movie.details.type}}</p></ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="!this.profile.userDetails">
+    <ion-button fill="clear" (click)="this.nav.navigateForward('login')">Click to Login</ion-button>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="likeVid(movie.id)">
+      <ion-icon name="heart"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+
+

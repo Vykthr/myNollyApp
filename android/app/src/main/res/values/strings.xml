@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">myNollyApp</string>
+    <string name="title_activity_main">myNollyApp</string>
+    <string name="package_name">com.mynollyapp.app</string>
+    <string name="custom_url_scheme">com.mynollyapp.app</string>
+</resources>

@@ -1,0 +1,49 @@
+.seg > div {
+    height: 15rem;
+}
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.title {
+    text-align: center;
+    font-size: 17px;
+    width: 100%;
+    text-transform: uppercase;
+    margin: 0;
+}
+.sub {
+    font-size: 15px;
+}
+.des {
+    line-height: 1.4;
+}
+.bttn {
+    text-align: center;
+}
+.bttn ion-button{
+    height: 3rem;
+    margin-top: 1rem;
+}
+ion-item {
+    border-radius: 10px;
+}
+ion-badge {
+    margin: 0 .2rem;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+ion-list {
+    background: transparent;
+}
+ion-list ion-item {
+    margin: .5rem 0;
+    border-radius: 5px;
+}
+.trailer{
+    border: 1px solid var(--ion-color-primary);
+   --background: transparent;
+   border-radius: 64px;
+}

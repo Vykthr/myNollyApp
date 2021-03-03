@@ -1,0 +1,45 @@
+ion-col {
+    color: #000;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 1rem;
+}
+ion-col span {
+    font-size: 1.5rem;
+    color: var(--ion-color-primary);
+}
+ion-row{
+    border-radius: 5px;
+    background-color: #eee;
+    margin-bottom: 1rem;
+}
+ion-content ion-icon {
+    display: block;
+    margin: auto;
+    width: 75%;
+    height: 75%;
+}
+
+.layout {
+    background-color: transparent;
+}
+.layout ion-col {
+    background-color: #ddd;
+    border-radius: 5px;
+    margin: 0 .5rem;
+    box-sizing: border-box;
+}
+.layout p {
+    text-align: center;
+    width: 100%;
+}
+.layout ion-icon {
+    display: block;
+    margin: auto;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+ion-icon {
+    color: var(--ion-color-primary);
+}

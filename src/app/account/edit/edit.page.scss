@@ -1,0 +1,26 @@
+ion-item {
+    margin: 1rem 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+.imag {
+    display: block;
+    margin: auto;
+    width: 10rem;
+    object-fit: cover;
+    height: 10rem;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+}
+.verify{
+    margin: 1rem 0 1.5rem;
+}
+.verify p {
+    margin: 0;
+    line-height: 1.2;
+    text-align: center;
+}
+form{
+    text-align: center;
+}

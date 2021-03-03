@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>admin</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon color="light" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      pullingText="Pull to refresh"
+      refreshingSpinner="bubbles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <img style="margin-bottom: -2rem;"  src="assets/admin.jpg">
+
+  <ion-grid fixed class="ion-padding" style="display: inline-block;">
+    <ion-row>
+    <!-- <ion-row (click)="open('view', 'users')"> -->
+      <ion-col size="3">
+        <ion-icon name="people-outline"></ion-icon>
+      </ion-col>
+      <ion-col size="9">
+        <p>Users <br><span>{{this.movie.users - 1}}</span></p>
+      </ion-col>
+    </ion-row>
+    <ion-row (click)="open('view')">
+      <ion-col size="3">
+        <ion-icon name="videocam-outline"></ion-icon>
+      </ion-col>
+      <ion-col size="9">
+        <p>Movies <br><span>{{this.movie.movieList.length}}</span></p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="layout" style="margin-top: 1rem">
+      <ion-col (click)="open('edit')">
+        <p><ion-icon name="add-outline"></ion-icon> <br>
+        Add Movies</p>
+      </ion-col>
+      <ion-col (click)="open('view')">
+        <p><ion-icon name="create-outline"></ion-icon> <br>
+        Update Movies</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="layout" >
+      <ion-col (click)="open('view')">
+        <p><ion-icon name="trash-outline"></ion-icon> <br>
+        Delete Movies</p>
+      </ion-col>
+      <ion-col routerLink="/about" [routerDirection]="'forward'">
+        <p><ion-icon name="information-circle-outline"></ion-icon> <br>
+        About</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

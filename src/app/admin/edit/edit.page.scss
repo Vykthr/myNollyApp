@@ -1,0 +1,23 @@
+ion-item {
+    margin: .5rem 0;
+    border-radius: 5px;
+}
+.thumb img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.thumb{
+    height: 15rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+.thumb ion-icon {
+    display: block;
+    margin: auto;
+    height: 30%;
+    width: 30%;
+}

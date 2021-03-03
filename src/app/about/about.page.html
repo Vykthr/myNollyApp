@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>about</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentActionSheet()"><ion-icon name="share-social"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <img src="assets/icon.png">
+  <p>Nolly App is the lead curator of all the latest African movies and the platforms to see them. We keep you updated!</p>
+
+  <ion-list>
+    <ion-list-header>GET IN TOUCH WITH US - <br>
+      SUBMISSION / PARTNERSHIP / INFORMATION:</ion-list-header>
+      <ion-row>
+        <ion-col><ion-button fill="clear"><a href="mailto:info@mynollyapp.com"><ion-icon name="mail"></ion-icon></a></ion-button></ion-col>
+        <ion-col><ion-button fill="clear"><a href="tel:+23408137861173"><ion-icon name="call"></ion-icon></a></ion-button></ion-col>
+        <ion-col><ion-button fill="clear"><a href="https://facebook.com/nollyapp"><ion-icon name="logo-facebook"></ion-icon></a></ion-button></ion-col>
+        <ion-col><ion-button fill="clear"><a href="https://twitter.com/nollyapp" fill="clear"><ion-icon name="logo-twitter"></ion-icon></a></ion-button></ion-col>
+        <ion-col><ion-button fill="clear"><a href="https://instagram.com/nollyapp"><ion-icon name="logo-instagram"></ion-icon></a></ion-button></ion-col>
+      </ion-row>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <p>Developed by <a href="https://noukaan.com">Noukaan Innovation</a></p>
+</ion-footer>

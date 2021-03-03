@@ -1,0 +1,228 @@
+<ion-header *ngIf="seg == 'add'; else hed">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Movie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="seg == 'add'; else ed" class="ion-padding">
+  <div class="thumb" (click)="uploadImage()">
+    <img  *ngIf="img; else def" [src]="'data:image/jpg;base64,'+img">
+    <ng-template #def>
+      <ion-icon name="camera-outline"></ion-icon>
+    </ng-template>
+  </div>
+
+  <form [formGroup]="addForm">
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="create-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Title *</ion-label>
+      <ion-input formControlName="title" type="text" required>
+      </ion-input>
+    </ion-item>
+    
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="reader-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Synopsis *</ion-label>
+      <ion-textarea formControlName="description" type="text" required>
+      </ion-textarea>
+    </ion-item>
+    
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="open-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Link *</ion-label>
+      <ion-input formControlName="link" type="text" required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="link-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Link to *</ion-label>
+      <ion-select formControlName="from">
+        <ion-select-option *ngFor="let from of froms; let i = index"  [value]="from">{{from | titlecase}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="link-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Trailer Link</ion-label>
+      <ion-input formControlName="trailer" type="text">
+      </ion-input>
+    </ion-item>
+      
+    <ion-item lines="none" class="form-group" style="margin-bottom: 0;" (click)="presentAlertPrompt('cast')">
+      <ion-icon name="people-outline" slot="start"></ion-icon>
+      <ion-label >Cast</ion-label>
+      <ion-icon slot="end" name="add">
+      </ion-icon>
+    </ion-item>
+    <div *ngIf="addForm.value.cast.length > 0"  style="margin-top: 0;">
+      <ion-chip *ngFor="let item of addForm.value.cast; let i = index">{{item}} <ion-icon (click)="remove(i, 'cast')" name="close-outline"></ion-icon></ion-chip>
+    </div>
+    
+    <ion-item lines="none" class="form-group" style="margin-bottom: 0;" (click)="presentAlertPrompt('producer')">
+      <ion-icon name="people-outline" slot="start"></ion-icon>
+      <ion-label >Producers</ion-label>
+      <ion-icon slot="end" name="add">
+      </ion-icon>
+    </ion-item>
+    <div *ngIf="addForm.value.producers.length > 0"  style="margin-top: 0;">
+      <ion-chip *ngFor="let item of addForm.value.producers; let i = index">{{item}} <ion-icon (click)="remove(i, 'producers')" name="close-outline"></ion-icon></ion-chip>
+    </div>
+    
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="mic-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Language *</ion-label>
+      <ion-select formControlName="language" multiple="true">        
+        <ion-select-option *ngFor="let language of languages"  [value]="language" required>{{language | titlecase}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="albums-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Genre *</ion-label>
+      <ion-select formControlName="genre" multiple="true">
+        <ion-select-option *ngFor="let genre of genres"  [value]="genre" required>{{genre | titlecase}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="albums-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Movie Type *</ion-label>
+      <ion-select formControlName="type">
+        <ion-select-option *ngFor="let type of types"  [value]="type" required>{{type | titlecase}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item lines="none" class="form-group">
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Year *</ion-label>
+      <ion-select formControlName="year">
+        <ion-select-option *ngFor="let year of years; let i = index"  [value]="(today - i)" required>{{today - i}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-button (click)="add(this.addForm.value)" expand="block" [disabled]="!addForm.valid">
+      Add Movie
+    </ion-button>
+  </form>
+</ion-content>
+
+<ng-template #hed>
+  <ion-header *ngIf="seg == 'edit'">
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Edit Movie</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="deleteMovie()">
+          <ion-icon slot="start" name="trash"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+</ng-template>
+
+<ng-template #ed>
+  <ion-content class="ion-padding" *ngIf="seg == 'edit'">
+    <div class="thumb" (click)="uploadRealtime()">
+      <img *ngIf="mov"  [src]="mov.details.img">
+    </div>
+  
+    <form [formGroup]="editForm">
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Title *</ion-label>
+        <ion-input formControlName="title" type="text" required>
+        </ion-input>
+      </ion-item>
+      
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="reader-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Synopsis *</ion-label>
+        <ion-textarea formControlName="description" type="text" required>
+        </ion-textarea>
+      </ion-item>
+      
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="link-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Link *</ion-label>
+        <ion-input formControlName="link" type="text" required>
+        </ion-input>
+      </ion-item>
+  
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="open-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Link to *</ion-label>
+        <ion-select formControlName="from">
+          <ion-select-option *ngFor="let from of froms; let i = index"  [value]="from">{{from | titlecase}}</ion-select-option>
+        </ion-select>
+      </ion-item>    
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="link-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Trailer Link</ion-label>
+        <ion-input formControlName="trailer" type="text">
+        </ion-input>
+      </ion-item>
+      
+      <ion-item lines="none" class="form-group" style="margin-bottom: 0;" (click)="presentAlertPrompt('cast')">
+        <ion-icon name="people-outline" slot="start"></ion-icon>
+        <ion-label >Cast</ion-label>
+        <ion-icon slot="end" name="add">
+        </ion-icon>
+      </ion-item>
+      <div *ngIf="editForm.value.cast.length > 0"  style="margin-top: 0;">
+        <ion-chip *ngFor="let item of editForm.value.cast; let i = index">{{item}} <ion-icon (click)="remove(i, 'cast')" name="close-outline"></ion-icon></ion-chip>
+      </div>
+      
+      <ion-item lines="none" class="form-group" style="margin-bottom: 0;" (click)="presentAlertPrompt('producers')">
+        <ion-icon name="people-outline" slot="start"></ion-icon>
+        <ion-label >Producers</ion-label>
+        <ion-icon slot="end" name="add">
+        </ion-icon>
+      </ion-item>
+      <div *ngIf="editForm.value.producers.length > 0"  style="margin-top: 0;">
+        <ion-chip *ngFor="let item of editForm.value.producers; let i = index">{{item}} <ion-icon (click)="remove(i, 'producers')" name="close-outline"></ion-icon></ion-chip>
+      </div>
+      
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="mic-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Language *</ion-label>
+        <ion-select formControlName="language" multiple="true">        
+          <ion-select-option *ngFor="let language of languages"  [value]="language">{{language | titlecase}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="albums-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Genre *</ion-label>
+        <ion-select formControlName="genre" multiple="true">
+          <ion-select-option *ngFor="let genre of genres"  [value]="genre">{{genre | titlecase}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="albums-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Movie Type *</ion-label>
+        <ion-select formControlName="type">
+          <ion-select-option *ngFor="let type of types"  [value]="type" required>{{type | titlecase}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+  
+      <ion-item lines="none" class="form-group">
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Year *</ion-label>
+        <ion-select formControlName="year">
+          <ion-select-option *ngFor="let year of years; let i = index"  [value]="(today - i)">{{today - i}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-button (click)="update(this.editForm.value)" expand="block" [disabled]="!editForm.valid">
+        Update Movie
+      </ion-button>
+    </form>
+  </ion-content>
+</ng-template>

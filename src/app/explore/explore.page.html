@@ -1,0 +1,174 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Explore Movies
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="this.menuCtrl.enable(true);this.menuCtrl.toggle()">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment value="all" [(ngModel)]="seg" scrollable>
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="cinema">
+        <ion-label>Movies in Cinema</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="short">
+        <ion-label>Short Films</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      pullingText="Pull to refresh"
+      refreshingSpinner="bubbles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="movies.movieList.length > 0; else load" >
+    <div [ngSwitch]="seg">
+      <div *ngSwitchCase="'cinema'">
+        <p class="heading">Movies in Cinema</p>
+        <div *ngFor="let movie of movies.movieList; let i = index">
+          <ion-card *ngIf="movie.details.from=='cinemas'" (click)="open(movie)">
+            <img [src]="movie.details.img">
+            <ion-row>
+              <ion-col size="9">
+                <p>{{movie.details.title}} ({{movie.details.year}})</p>
+                <div class="stars" *ngFor="let star of arr; let i = index">
+                  <ion-icon *ngIf="i <= getRate(movie.details.votes, movie.details.views) - 1; else half" class="starred" name="star"></ion-icon>
+                  <ng-template #half>
+                    <ion-icon *ngIf="getRate(movie.details.votes, movie.details.views)%1 >= 0.5 && i - trunc(getRate(movie.details.votes, movie.details.views)-1) == 1; else def" class="starred"  name="star-half-outline"></ion-icon>
+                  </ng-template>
+                  <ng-template #def>
+                    <ion-icon name="star"></ion-icon>
+                  </ng-template>
+                </div>
+              </ion-col>
+              <ion-col size="3" class="from">
+                <img [src]="'assets/' + movie.details.from + '.png'">
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'short'">
+        <p class="heading">Short Films</p>
+        <div *ngFor="let movie of movies.movieList; let i = index">
+          <ion-card *ngIf="movie.details.type=='Short Film'" (click)="open(movie)">
+            <img [src]="movie.details.img">
+            <ion-row>
+              <ion-col size="9">
+                <p>{{movie.details.title}} ({{movie.details.year}})</p>
+                <div class="stars" *ngFor="let star of arr; let i = index">
+                  <ion-icon *ngIf="i <= getRate(movie.details.votes, movie.details.views) - 1; else half" class="starred" name="star"></ion-icon>
+                  <ng-template #half>
+                    <ion-icon *ngIf="getRate(movie.details.votes, movie.details.views)%1 >= 0.5 && i - trunc(getRate(movie.details.votes, movie.details.views)-1) == 1; else def" class="starred"  name="star-half-outline"></ion-icon>
+                  </ng-template>
+                  <ng-template #def>
+                    <ion-icon name="star"></ion-icon>
+                  </ng-template>
+                </div>
+              </ion-col>
+              <ion-col size="3" class="from">
+                <img [src]="'assets/' + movie.details.from + '.png'">
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'all'">
+        <div *ngIf="this.movies.filter.length == 0; else search">
+          <div *ngFor="let movie of movies.movieList; let i = index">
+            <ion-card (click)="open(movie)">
+              <img [src]="movie.details.img">
+              <ion-row>
+                <ion-col size="9">
+                  <p>{{movie.details.title}} ({{movie.details.year}})</p>
+                  <div class="stars" *ngFor="let star of arr; let i = index">
+                    <ion-icon *ngIf="i <= getRate(movie.details.votes, movie.details.views) - 1; else half" class="starred" name="star"></ion-icon>
+                    <ng-template #half>
+                      <ion-icon *ngIf="getRate(movie.details.votes, movie.details.views)%1 >= 0.5 && i - trunc(getRate(movie.details.votes, movie.details.views)-1) == 1; else def" class="starred"  name="star-half-outline"></ion-icon>
+                    </ng-template>
+                    <ng-template #def>
+                      <ion-icon name="star"></ion-icon>
+                    </ng-template>
+                  </div>
+                </ion-col>
+                <ion-col size="3" class="from">
+                  <img [src]="'assets/' + movie.details.from + '.png'">
+                </ion-col>
+              </ion-row>
+            </ion-card>
+          </div>
+        </div>
+
+        <ng-template #search>
+          <div>
+            <ion-item><p class="filt" (click)="this.menuCtrl.toggle()"><span>FILTERS:</span>
+              <span class="fil" *ngFor="let filter of this.movies.filter" >{{filter}}</span></p> 
+              <ion-button slot="end" (click)="this.movies.filter = []; this.movies.searchRes = []; this.movies.initSearchForm();"><ion-icon name="close-outline" ></ion-icon></ion-button>
+            </ion-item>
+          </div>
+          <div *ngIf="this.movies.searchRes.length != 0; else emp" >
+            <div *ngFor="let movie of this.movies.searchRes">
+              <ion-card (click)="open(movie)">
+                <img [src]="movie.details.img">
+                <ion-row>
+                  <ion-col size="9">
+                    <p>{{movie.details.title}} ({{movie.details.year}})</p>
+                    <div class="stars" *ngFor="let star of arr; let i = index">
+                      <ion-icon *ngIf="i <= getRate(movie.details.votes, movie.details.views) - 1; else half" class="starred" name="star"></ion-icon>
+                      <ng-template #half>
+                        <ion-icon *ngIf="getRate(movie.details.votes, movie.details.views)%1 >= 0.5 && i - trunc(getRate(movie.details.votes, movie.details.views)-1) == 1; else def" class="starred"  name="star-half-outline"></ion-icon>
+                      </ng-template>
+                      <ng-template #def>
+                        <ion-icon name="star"></ion-icon>
+                      </ng-template>
+                    </div>
+                  </ion-col>
+                  <ion-col size="3" class="from">
+                    <img [src]="'assets/' + movie.details.from + '.png'">
+                  </ion-col>
+                </ion-row>
+              </ion-card>        
+            </div>
+          </div>
+          <ng-template #emp>
+            <div>
+              <p style="text-align: center;">No Results Found.</p>
+            </div>
+          </ng-template>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #load>
+    <div *ngIf="loader; else err"  class="loader">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+    <ng-template #err>
+      <div class="loader">
+        <div>
+          <img src="assets/error.png">
+          <p>AN ERROR OCCURED</p>
+          <small>Pull to Refresh</small>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</ion-content>
+
+

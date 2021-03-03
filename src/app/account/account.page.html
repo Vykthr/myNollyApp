@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Account
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit()">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="open()">
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="this.logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="!this.profile.currentUser.emailVerified" class="verify" >
+    <p>Verify Email Account <br><a (click)="this.profile.verify()">Click to resend verification email</a></p>
+  </div>
+  <img *ngIf="this.profile.userDetails.img; else def"  src="{{this.profile.userDetails.img}}" alt="" class="imag">
+  <ng-template #def><img (click)="this.profile.uploadRealtime()" src="assets/icon2.png" class="imag"></ng-template>
+  <ion-item>
+    <ion-label position="floating">Surname</ion-label>
+    <ion-input readonly="readonly" value="{{this.profile.userDetails.surname}}"></ion-input>
+    <ion-icon slot="end" name="person"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">First Name</ion-label>
+    <ion-input readonly="readonly" value="{{this.profile.userDetails.firstName}}"></ion-input>
+    <ion-icon slot="end" name="person"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Email Address</ion-label>
+    <ion-input readonly="readonly" value="{{this.profile.userDetails.email}}"></ion-input>
+    <ion-icon slot="end" name="mail"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Phone</ion-label>
+    <ion-input readonly="readonly" value="{{this.profile.userDetails.phone}}"></ion-input>
+    <ion-icon slot="end" name="call"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Date Of Birth</ion-label>
+    <ion-datetime readonly="readonly" value="{{this.profile.userDetails.dob}}"></ion-datetime>
+    <ion-icon slot="end" name="calendar"></ion-icon>
+  </ion-item>
+</ion-content>

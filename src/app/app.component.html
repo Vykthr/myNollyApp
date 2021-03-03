@@ -1,0 +1,71 @@
+<ion-app>
+  <ion-split-pane contentId="menu-content" [when]="false">
+    <ion-menu contentId="menu-content" [disabled]="true" menuId="menu-content" side="end" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Filter Search</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="this.movie.searchForm">
+          <ion-item lines="none" class="form-group">
+            <ion-input placeholder="Enter Movie Title" formControlName="text"></ion-input>
+            <ion-icon slot="end" name="search"></ion-icon>
+          </ion-item>
+    
+          <ion-item lines="none" class="form-group">
+            <ion-icon name="albums-outline" slot="end"></ion-icon>
+            <ion-label position="floating">Genres</ion-label>
+            <ion-select formControlName="genres" multiple="true">        
+              <ion-select-option *ngFor="let genre of this.movie.genres"  [value]="genre" required>{{genre | titlecase}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-item lines="none" class="form-group">
+            <ion-icon name="albums-outline" slot="end"></ion-icon>
+            <ion-label position="floating">Movie Type</ion-label>
+            <ion-select formControlName="types" multiple="true">        
+              <ion-select-option *ngFor="let type of this.movie.types"  [value]="type" required>{{type | titlecase}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-item lines="none" class="form-group">
+            <ion-icon name="mic-outline" slot="end"></ion-icon>
+            <ion-label position="floating">Language</ion-label>
+            <ion-select formControlName="languages" multiple="true">        
+              <ion-select-option *ngFor="let language of this.movie.languages"  [value]="language" required>{{language | titlecase}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-item lines="none" class="form-group">
+            <ion-icon name="people-outline" slot="end"></ion-icon>
+            <ion-label position="floating">Cast</ion-label>
+            <ion-select formControlName="cast" multiple="true">        
+              <ion-select-option *ngFor="let cast of this.movie.cast"  [value]="cast" required>{{cast | titlecase}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-item lines="none" class="form-group">
+            <ion-icon name="people-outline" slot="end"></ion-icon>
+            <ion-label position="floating">Producer</ion-label>
+            <ion-select formControlName="producer" multiple="true">        
+              <ion-select-option *ngFor="let producer of this.movie.producers"  [value]="producer" required>{{producer | titlecase}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-item lines="none" class="form-group">
+            <ion-icon name="calendar-outline" slot="end"></ion-icon>
+            <ion-label position="floating">Year</ion-label>
+            <ion-select formControlName="year" multiple="true">        
+              <ion-select-option *ngFor="let year of this.movie.year"  [value]="year" required>{{year}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-button expand="block" id="bt" (click)="search()">Search</ion-button>
+
+        </form>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="menu-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>
